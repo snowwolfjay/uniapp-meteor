@@ -1,0 +1,29 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "start": "meteor run --port 0.0.0.0:3002",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "build": "cross-env NODE_ENV=development meteor build --debug --directory ../ --platforms web.browser",
+    "remote-db": "SET MONGO_URL=mongodb://xxxxx && npm run start"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.14.8",
+    "meteor-node-stubs": "^1.1.0"
+  },
+  "meteor": {
+    "mainModule": {
+      "server": "server/main.ts"
+    },
+    "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "@types/meteor": "^1.4.78",
+    "@types/meteor-publish-composite": "0.0.37",
+    "@types/mocha": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "typescript": "^4.4.2"
+  }
+}
