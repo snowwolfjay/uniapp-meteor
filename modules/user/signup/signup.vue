@@ -44,11 +44,6 @@ watch(user, (ov, nv) => {
 </script>
 
 <style scoped="" lang="scss">
-.content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
 
 .input-list {
 	padding: 50upx 70upx;

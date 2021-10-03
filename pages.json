@@ -7,7 +7,7 @@
 			}
 		}
 	    ,{
-            "path" : "modules/user/login/login",
+            "path" : "modules/user/signin/signin",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "登录",
@@ -17,6 +17,24 @@
         }
         ,{
             "path" : "modules/user/signup/signup",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "modules/chatroom/create/create",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "modules/chatroom/room/room",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

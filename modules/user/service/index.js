@@ -2,13 +2,14 @@
 import {
 	reactive
 } from "vue";
+
 import {
 	ddp
 } from "../../core/ddp";
 
 export const user = reactive({})
-export const myRooms = reactive([])
 
+export const Users = ddp.db.collection('users')
 ddp.user.onChange((info) => {
 	if (info) {
 		for (const key in info) {

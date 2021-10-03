@@ -12,7 +12,7 @@ const Messages = new Mongo.Collection<any>("messages");
 
 Meteor.methods({
   "message.add": function (data: any) {
-    if (!this.userId || !data.room)
+    if (!this.userId || !data.roomId)
       throw new Meteor.Error("仅有登录用户能那啥");
     return Messages.insert({
       ...data,

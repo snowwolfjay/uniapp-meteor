@@ -1,23 +1,25 @@
 {
-  "id": "hj-ddp",
-  "displayName": "hj-ddp",
-  "version": "1.0.4",
-  "description": "一个uniapp的DDP客户端实现，助你成为全栈工程师，哈哈~",
+  "id": "uni-icons",
+  "displayName": "uni-icons 图标",
+  "version": "1.2.1",
+  "description": "图标组件，用于展示移动端常见的图标，可自定义颜色、大小。",
   "keywords": [
-    "hj-ddp",
-    "DDP",
-    "Meteor",
-    "数据同步",
-    "响应式数据"
+    "uni-ui",
+    "uniui",
+    "icon",
+    "图标"
 ],
-  "repository": "",
+  "repository": "https://github.com/dcloudio/uni-ui",
   "engines": {
-    "HBuilderX": "^3.1.0"
+    "HBuilderX": ""
+  },
+  "directories": {
+    "example": "../../temps/example_temps"
   },
   "dcloudext": {
     "category": [
-      "JS SDK",
-      "通用 SDK"
+      "前端组件",
+      "通用组件"
     ],
     "sale": {
       "regular": {
@@ -33,14 +35,12 @@
     "declaration": {
       "ads": "无",
       "data": "无",
-      "permissions": "暂无"
+      "permissions": "无"
     },
-    "npmurl": ""
+    "npmurl": "https://www.npmjs.com/package/@dcloudio/uni-ui"
   },
   "uni_modules": {
-    "dependencies": [
-      "hj-core"
-    ],
+    "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {
@@ -48,13 +48,9 @@
         "aliyun": "y"
       },
       "client": {
-        "Vue": {
-          "vue2": "y",
-          "vue3": "y"
-        },
         "App": {
           "app-vue": "y",
-          "app-nvue": "u"
+          "app-nvue": "y"
         },
         "H5-mobile": {
           "Safari": "y",
@@ -72,13 +68,17 @@
         "小程序": {
           "微信": "y",
           "阿里": "y",
-          "百度": "u",
-          "字节跳动": "u",
-          "QQ": "u"
+          "百度": "y",
+          "字节跳动": "y",
+          "QQ": "y"
         },
         "快应用": {
           "华为": "u",
           "联盟": "u"
+        },
+        "Vue": {
+            "vue2": "y",
+            "vue3": "y"
         }
       }
     }

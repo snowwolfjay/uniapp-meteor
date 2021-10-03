@@ -243,7 +243,7 @@ class DDPConnection extends EventEmitter {
   ddpMessageHandler(data) {
     data = EJSON.parse(data);
     const type = data == null ? void 0 : data.msg;
-    console.log(data);
+	this.emit('ddp-message',data)
     switch (type) {
       case "failed": {
         if (this.supportedDdpVersions.indexOf(data.version) !== -1) {

@@ -1,43 +1,41 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area" v-for="item in list" :key="item._id">
-			{{item.name}}	
+	<view class="fcol">
+		<view class="pd">
+			<view class="mgv frow fbtw">
+				<view class="f1">我的房间列表</view>
+				<navigator class="fsc" url="../../modules/chatroom/create/create">
+					<button type="primary" size="mini">创建</button>
+				</navigator>
+			</view>
+			<uni-list>
+				<block v-for="item in myRooms" :key="item._id">
+					<uni-list-item :title="item.name" link to='/modules/chatroom/room/room' @click="goRoom(item._id)">
+					</uni-list-item>
+				</block>
+			</uni-list>
+		</view>
+		<view class="pd">
+			<view class="mgv">房间列表</view>
+			<uni-list v-if="otherRooms.length">
+				<block v-for="item in otherRooms" :key="item._id">
+					<uni-list-item :clickable="true" :title="item.name" @click="joinRoom(item._id)">
+					</uni-list-item>
+
+				</block>
+			</uni-list>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import { ddp } from "../../modules/core/ddp";
-	import { reactive } from "vue";
-	const list = reactive([])
-	ddp.map('rooms',list)
+	import {
+		myRooms,
+		otherRooms,
+		goRoom,
+		joinRoom
+	} from "../../modules/chatroom/service/index.js"
 </script>
 
 <style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
 
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
 </style>

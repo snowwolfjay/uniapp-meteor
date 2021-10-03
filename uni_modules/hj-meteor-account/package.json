@@ -2,9 +2,10 @@
   "id": "hj-meteor-account",
   "displayName": "hj-meteor-account",
   "version": "1.0.0",
-  "description": "hj-meteor-account",
+  "description": "一个用于hj-dpp的 meteor-client 插件",
   "keywords": [
-    "hj-meteor-account"
+    "hj-ddp",
+    "meteor-account"
 ],
   "repository": "",
   "engines": {
@@ -13,7 +14,7 @@
   "dcloudext": {
     "category": [
         "JS SDK",
-        "JS SDK"
+        "通用 SDK"
     ],
     "sale": {
       "regular": {
@@ -27,9 +28,9 @@
       "qq": ""
     },
     "declaration": {
-      "ads": "",
-      "data": "",
-      "permissions": ""
+      "ads": "无",
+      "data": "无",
+      "permissions": "无"
     },
     "npmurl": ""
   },
@@ -38,16 +39,16 @@
     "encrypt": [],
     "platforms": {
       "cloud": {
-        "tcb": "u",
-        "aliyun": "u"
+        "tcb": "y",
+        "aliyun": "y"
       },
       "client": {
         "Vue": {
-          "vue2": "u",
-          "vue3": "u"
+          "vue2": "y",
+          "vue3": "y"
         },
         "App": {
-          "app-vue": "u",
+          "app-vue": "y",
           "app-nvue": "u"
         },
         "H5-mobile": {
@@ -57,14 +58,14 @@
           "QQ浏览器(Android)": "u"
         },
         "H5-pc": {
-          "Chrome": "u",
+          "Chrome": "y",
           "IE": "u",
-          "Edge": "u",
+          "Edge": "y",
           "Firefox": "u",
           "Safari": "u"
         },
         "小程序": {
-          "微信": "u",
+          "微信": "y",
           "阿里": "u",
           "百度": "u",
           "字节跳动": "u",

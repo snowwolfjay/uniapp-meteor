@@ -11,7 +11,7 @@
 		<view class="dlbutton fsc" hover-class="dlbutton-hover" @tap="signin(data)">
 			<text>登录</text>
 		</view>
-		<navigator url="../signup/signup" class="btn mgh fsc">
+		<navigator url="../signup/signup" class="btn fsc mgv">
 			<button  type="default">注册</button>
 		</navigator>
 	</view>

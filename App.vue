@@ -1,5 +1,6 @@
 <script>
 import { ddp } from "./modules/core/ddp";
+console.log(ddp)
 ddp.subscribe("rooms.all")
 ddp.subscribe("rooms.mine")
 export default {
@@ -27,6 +28,9 @@ page {
 }
 page-body {
 	background-color: red;
+}
+view{
+	box-sizing: border-box;
 }
 .frow,
 .fcol {
@@ -86,11 +90,11 @@ page-body {
 }
 
 .mgh {
-	margin: 0.5rem 0;
+	margin: 0 0.5rem;
 }
 
 .mgv {
-	margin: 0 0.5rem;
+	margin: 0.5rem 0;
 }
 
 .mgt {

@@ -31,6 +31,7 @@ export const ddp: IDDPClient = init("ws://localhost:3002");
 // js
 export const ddp = init("ws://localhost:3002");
 ```
+
 ####1. init :  参数 string | undefined | IDDPClientOption
 
 ```
@@ -44,6 +45,7 @@ interface IDDPClientOption {
   storageKey?: string;
 }
 ```
+
 >>说明： 缺省值为ws://localhost:3000 - meteor默认地址，Mongodb为meteor端口+1或者自己传入 ；同一个ddp服务地址只会建立一个客户端
 >>>IDDPClientOption.socketConstructor: 自定义的socket构造函数，已经封装了个uniapp的，所以不需要传入，自己可以封装个http的只要实现Socket的方法即可
 
@@ -78,8 +80,10 @@ interface IDDPClient {
   ): {
     stop: () => void;
   };
+  use(plugin:any,option) // 注册一个ddp插件 -
 }
 ```
+
 > 1. call: 调用远程定义的方法，只支持一个参数传送给远端*，ready回调会传入远程方法的返回值，updated会在call方法修改了文档+订阅了这个文档，且本地更新完后调用 - （例如你新增一个订单，成功后会返回订单id，但不一定已经入库了，updated会晚一点执行，但是如果一个方法修改了文档然后做了些其它耗时的操作updated会早于ready)
 
 > 2. subscribe: 订阅一个发布源，可以传入一个参数，ready方法在订阅源的所有文档都在本地后调用
@@ -94,6 +98,7 @@ interface IDDPClient {
 ### 3. Mongo/Collection 说明
 
 >除了使用ddp.map方法映射数据到一个响应式数组，你还可以 直接观察某个数据集的数据
+
 ```
 // 订阅数据
 const id = ddp.subscribe("todos",{userId:'233'})
@@ -114,7 +119,9 @@ const {stop} = ddp.map(Todos, list, {
 		})
 	})
 ```
+
 接口说明：
+
 ```
 interface IMongo {
   collection<T extends IDocument = any>(name: string): ICollection<T>;
