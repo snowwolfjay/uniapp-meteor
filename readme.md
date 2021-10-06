@@ -22,3 +22,7 @@ npm run start
 /modules/chatroom 聊天室相关服务和页面
 /pages/index/index 主页
 ```
+
+## app调试，安装hbuildx，然后点击运行到设备即可 --- 记得按照上面的步骤启动meteor ddp服务应用
+
+## web调试预览，安装hbuildx，然后点击运行到浏览器即可 --- 记得启动meteor ddp服务应用
