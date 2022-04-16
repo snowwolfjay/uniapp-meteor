@@ -1,7 +1,7 @@
 {
   "id": "hj-ddp",
-  "displayName": "hj-ddp",
-  "version": "1.0.4",
+  "displayName": "DDP协议的Uniapp插件实现【附带MiniMongo Selector】",
+  "version": "1.2.2",
   "description": "一个uniapp的DDP客户端实现，助你成为全栈工程师，哈哈~",
   "keywords": [
     "hj-ddp",
@@ -54,7 +54,7 @@
         },
         "App": {
           "app-vue": "y",
-          "app-nvue": "u"
+          "app-nvue": "y"
         },
         "H5-mobile": {
           "Safari": "y",

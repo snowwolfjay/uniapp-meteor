@@ -25,11 +25,11 @@
 ### 1. 建立连接 - 确保安装了hj-core
 
 ```
-import { init, IDDPClient } from "../../uni_modules/hj-ddp/js_sdk"
+import { connect, IDDPClient } from "../../uni_modules/hj-ddp/js_sdk"
 // ts
-export const ddp: IDDPClient = init("ws://localhost:3002");
+export const ddp: IDDPClient = connect("ws://localhost:3002");
 // js
-export const ddp = init("ws://localhost:3002");
+export const ddp = connect("ws://localhost:3002");
 ```
 
 ####1. init :  参数 string | undefined | IDDPClientOption
@@ -42,7 +42,6 @@ interface IDDPClientOption {
   autoReconnectTimer?: number;
   url?: string;
   ddpVersion?: string;
-  storageKey?: string;
 }
 ```
 
@@ -59,28 +58,16 @@ interface IDDPClientOption {
 
 >>>IDDPClientOption.ddpVersion: ddp协议版本，默认 1，当前版本，协议挺稳定，基本没改过
 
->>>IDDPClientOption.storageKey: 可以传个表示client数据缓存的key，但因为这个不好做【见changelog说明】所以意义不大
-
 >>返回：IDDPClient
 
 ### 2. IDDPClient说明 - 简单的看接口定义
 
 ```
 interface IDDPClient {
-  db: IMongo;
   call(name: string, arg?: any, ready?: Function, updated?: Function): void;
   subscribe(name: string, arg?: any, ready?: Function): string;
   unsubscribe(id: string): void;
   destroy(): void;
-  map<T extends IDocument = any>(
-    collection: string | ICollection<T>,
-    holder: any[],
-    selector: any,
-    options?: { id?: string; transform: (doc: any) => any }
-  ): {
-    stop: () => void;
-  };
-  use(plugin:any,option) // 注册一个ddp插件 -
 }
 ```
 
@@ -88,59 +75,8 @@ interface IDDPClient {
 
 > 2. subscribe: 订阅一个发布源，可以传入一个参数，ready方法在订阅源的所有文档都在本地后调用
 
-> 3. map : 第一个参数可以是数据集的名称或者已经创建的数据集，第二个参数是一个响应式数组例如传入一个reactive([])-vue3构建的引用或者this.list-vue2，然后第三个参数是一个选择器或者过滤器: 支持 string | Function | MongoSelector- 后面更新再详细说，用来过于文档,第四个传输让你可以传入一个独一无二的id避免重复订阅或者一个transform函数转化每个文档为新数据
+> 3. unsubscribe: 将subscribe返回的id传入即可取消订阅，订阅相关的数据会被清除~
 
-> 4. unsubscribe: 将subscribe返回的id传入即可取消订阅，订阅相关的数据会被清除~
-
-> 5. 属性 db- 本链接绑定的数据库对象Mongo
-
-
-### 3. Mongo/Collection 说明
-
->除了使用ddp.map方法映射数据到一个响应式数组，你还可以 直接观察某个数据集的数据
-
-```
-// 订阅数据
-const id = ddp.subscribe("todos",{userId:'233'})
-// 创建数据集 - 单例模式，也就是不会重复创建同名的数据集
-const Todos = ddp.db.collection("todos");
-// 查找所有数据：
-const todos = Todos.find()
-// 查找一条数据：
-const todos = Todos.find({due:{$gt:1}})
-// 映射数据：
-const todos = reactive([])
-const {stop} = ddp.map(Todos, list, {
-
-	}, {
-		transform: doc => ({
-			...doc,
-			time: Date.now()
-		})
-	})
-```
-
-接口说明：
-
-```
-interface IMongo {
-  collection<T extends IDocument = any>(name: string): ICollection<T>;
-  name: string;
-}
-ICollection<T extends IDocument = any> {
-  find(): Partial<T>[];
-  findOne(): Partial<T>;
-  observe(handler:ICollectionObserverHandler):void
-}
-ICollectionObserverHandler<T = any> {
-  added: (id: string, data: T) => any;
-  changed?: (id: string, fields: Partial<T>, removeFields: string[]) => any;
-  removed?: (id: string) => any;
-  error?: (err: any) => any;
-  addedBefore?: (id: string, fields: any, before: any) => any;
-  movedBefore?: (id: string, before: any) => any;
-}
-```
 
 
 

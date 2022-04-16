@@ -1,4 +1,4 @@
-export interface IDDPClientOption {
+export interface DDPClientOption {
   socketConstructor?: Socket;
   tlsOpts?: any;
   autoReconnect?: boolean;
@@ -19,66 +19,42 @@ export interface Socket {
 export interface SocketConstructor {
   new (url: string, protos?: string | string[], confs?: any): Socket;
 }
-export interface IDDPOption {
-  socketConstructor?: SocketConstructor;
-  tlsOpts?: any;
-  autoConnect?: boolean;
-  autoReconnect?: boolean;
-  autoReconnectTimer?: number;
-  maintainCollections?: boolean;
-  url?: string;
-  ddpVersion?: string;
-  db: IMongo;
-}
-export interface IDDPClient {
-  connection: IDDPConnection;
-  db: IMongo;
-  use(plugin:any,options?:any):any
-  call(name: string, arg?: any, ready?: Function, updated?: Function): void;
-  subscribe(name: string, arg?: any, ready?: Function): string;
+type subscribeReadyFunction = (
+  err?: any,
+  handler?: {
+    id: string;
+    name: string;
+    params: any;
+    stop(): void;
+  }
+) => void;
+export interface DDPClient {
+  connection: DDPConnection;
+  call(name: string, ...args: any[]): void;
+  subscribe(
+    name: string,
+    ready?: subscribeReadyFunction,
+    ...args: any[]
+  ): string;
+  subscribe(name: string, ...args: any[]): string;
   unsubscribe(id: string): void;
   destroy(): void;
-  map<T extends IDocument = any>(
-    collectionName: string | ICollection<T>,
-    holder: any[],
-    selector: any,
-    options?: { id?: string; transform: (doc: any) => any }
-  ): {
-    stop: () => void;
-  };
-}
-export interface IMongo {
-  collection<T extends IDocument = any>(name: string): ICollection<T>;
-  name: string;
-}
-export interface IDocument {
-  _id: string;
-  [key: string]: any;
+  isReady(): Promise<void>;
+  isClose(): Promise<void>;
+  onReady(cb: () => void): () => void;
+  onClose(cb: () => void): () => void;
 }
 
-export interface ICollection<T extends IDocument = any> {
-  find(selector?: any, opt?: { transform: (doc: any) => any }): Partial<T>[];
-  findOne(selector?: any, opt?: { transform: (doc: any) => any }): Partial<T>;
-  observe(handler:ICollectionObserverHandler):void
-}
-export interface ICollectionObserverHandler<T = any> {
-  added: (id: string, data: T) => any;
-  changed?: (id: string, fields: Partial<T>, removeFields: string[]) => any;
-  removed?: (id: string) => any;
-  error?: (err: any) => any;
-  addedBefore?: (id: string, fields: any, before: any) => any;
-  movedBefore?: (id: string, before: any) => any;
-}
-export interface IEventEmitter {
+export interface EventEmitter {
   maxListeners: number;
   emit(type, ...args): boolean;
   on(type, listener, prepend?: boolean);
-  once(type, listener, prepend?: boolean): IEventEmitter;
-  off(type, listener): IEventEmitter;
+  once(type, listener, prepend?: boolean): EventEmitter;
+  off(type, listener): EventEmitter;
   listenerCount(type): number;
   eventNames(): string[];
 }
-export enum IDDPConnectionState {
+export enum DDPConnectionState {
   CLOSED = 0,
   CONNECTING = 1,
   CONNECTED = 2,
@@ -87,21 +63,27 @@ export enum IDDPConnectionState {
   CLOSING = 5,
   RECONNECTING = 6,
 }
-export interface IDDPConnection extends IEventEmitter {
+export interface DDPConnection extends EventEmitter {
   tlsOpts: any;
   autoReconnect: boolean;
   autoReconnectTimer: number;
   url: string;
   socketConstructor: SocketConstructor;
   ddpVersion: string;
-  db: IMongo;
   socket: Socket;
   session: any;
-  state: IDDPConnectionState;
+  state: DDPConnectionState;
   isSocketBusy: boolean;
   connect(url?: string, protos?: any, data?: any): void;
   close(): void;
   call(name, params, callback?: any, updatedCallback?: any): void;
-  subscribe(name: string, params: any, callback?: any): string;
+  subscribe(
+    name: string,
+    params: any[],
+    callback?: subscribeReadyFunction
+  ): string;
   unsubscribe(id: string): void;
 }
+
+type Dictionary<T> = { [key: string]: T };
+export function connect(opt: DDPClientOption | string): DDPClient;

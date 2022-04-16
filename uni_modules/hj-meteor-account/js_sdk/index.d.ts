@@ -1,11 +1,22 @@
-
-declare interface IDDPClient {
-    loginWithPassword(u: string, password: string): Promise<any>;
-    user: {
-        state: 0 | 1 | 2; // offline logined loging
-        info: any;
-        onChange(cb: Function): void;
+import { IDDPClient } from "../../hj-ddp/js_sdk";
+export function useMeteorAccount(
+  client: IDDPClient,
+  opts?: { cacher?: any }
+): {
+  data: {
+    state: 0 | 1 | 2;
+    user?: {
+      _id: string;
+      profile?: {
+        name: string;
+        avatar: string;
+        id: number;
+      };
+      role?: any;
     };
-    logout(): Promise<any>;
-    createAccount(u: string, password: string): Promise<any>;
-}
+  };
+  loginWithPassword(username: string, password: string): Promise<any>;
+  logout(): void;
+  createAccount(u: string, password: string): Promise<any>;
+  onChange(cb: (user) => any): () => void;
+};

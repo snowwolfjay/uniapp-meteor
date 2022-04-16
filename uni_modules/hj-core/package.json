@@ -1,7 +1,7 @@
 {
   "id": "hj-core",
   "displayName": "hj-core",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "hj-x 系列公共依赖的存放点",
   "keywords": [
     "hj-core",
