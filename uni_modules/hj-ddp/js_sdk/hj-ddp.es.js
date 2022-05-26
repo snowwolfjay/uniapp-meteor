@@ -244,7 +244,7 @@ class DDPConnection extends EventEmitter {
 			});
 			if (oldIndex > -1) {
 				const oo = this.messages.splice(oldIndex, 1)[0];
-				this.revokeCallBack(oo.id, [1, "ignored"]);
+				this.revokeCallBack(oo.id, "忽略了相同参数的相同方法调用");
 			}
 		}
 		this.messages.push(data);
@@ -337,7 +337,7 @@ class DDPConnection extends EventEmitter {
 	}
 }
 var IDDPConnectionState;
-(function (IDDPConnectionState2) {
+(function(IDDPConnectionState2) {
 	IDDPConnectionState2[IDDPConnectionState2["CLOSED"] = 0] = "CLOSED";
 	IDDPConnectionState2[IDDPConnectionState2["CONNECTING"] = 1] = "CONNECTING";
 	IDDPConnectionState2[IDDPConnectionState2["CONNECTED"] = 2] = "CONNECTED";
@@ -362,7 +362,9 @@ class Client {
 			if (this.connection.state === DDPConnectionState.CONNECTED) {
 				return resolve()
 			}
-			const cb = ({ state }) => {
+			const cb = ({
+				state
+			}) => {
 				if (state === DDPConnectionState.CONNECTED) {
 					this.connection.off(DDPConnectionEvent.STATE_CHANGE, cb)
 					resolve()
@@ -374,7 +376,9 @@ class Client {
 			if (this.connection.state !== DDPConnectionState.CONNECTED) {
 				return resolve()
 			}
-			const cb = ({ state }) => {
+			const cb = ({
+				state
+			}) => {
 				if (state !== DDPConnectionState.CONNECTED) {
 					this.connection.off(DDPConnectionEvent.STATE_CHANGE, cb)
 					resolve()
@@ -397,7 +401,9 @@ class Client {
 			return () => onCloses.delete(cb)
 		}
 		let connected = false;
-		this.connection.on(DDPConnectionEvent.STATE_CHANGE, ({ state }) => {
+		this.connection.on(DDPConnectionEvent.STATE_CHANGE, ({
+			state
+		}) => {
 			const newState = state === DDPConnectionState.CONNECTED;
 			if (newState === connected) return;
 			connected = newState;
@@ -408,6 +414,11 @@ class Client {
 		const callArgs = args.filter((el) => typeof el !== "function");
 		const callback = args.filter((el) => typeof el === "function");
 		return this.connection.call(name, callArgs, callback[0], callback[1]);
+	}
+	callAsync(name, ...args) {
+		return new Promise((res, rej) => {
+			this.connection.call(name, callArgs, (err, data) => err ? rej(err) : res(data));
+		})
 	}
 	subscribe(name, ...args) {
 		const callArgs = args.filter((el) => typeof el !== "function");

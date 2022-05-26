@@ -11,9 +11,11 @@
 		<view class="dlbutton fsc" hover-class="dlbutton-hover" @tap="signin(data)">
 			<text>登录</text>
 		</view>
-		<navigator url="../signup/signup" class="btn fsc mgv">
-			<button  type="default">注册</button>
-		</navigator>
+		<view class=" fsc">
+			<navigator url="../signup/signup" class="btn mgv">
+				<button type="default">注册</button>
+			</navigator>
+		</view>
 	</view>
 </template>
 
@@ -24,17 +26,18 @@
 	} from "vue"
 	import {
 		signin,
-		user
+		mineInfo,
+		ready,
+		account
 	} from "../service";
 	const data = reactive({
 		username: "",
 		password: ""
 	})
-	watch(user, (ov, nv) => {
-		console.log({ov,nv})
-		if (nv?._id) {
+	watch(() => account.data.state, (nv, ov) => {
+		if (nv === 1) {
 			uni.reLaunch({
-				 url: '/pages/index/index'
+				url: '/pages/index/index'
 			});
 		}
 	}, {
@@ -67,13 +70,16 @@
 			width: 100%;
 		}
 	}
-	.btn,.dlbutton{
+
+	.btn,
+	.dlbutton {
 		font-size: 34upx;
 		width: 470upx;
 		height: 100upx;
 		border-radius: 50upx;
 		line-height: 100upx;
 	}
+
 	.dlbutton {
 		color: #ffffff;
 		background: linear-gradient(-90deg,
@@ -89,5 +95,4 @@
 				rgba(63, 205, 235, 0.9),
 				rgba(188, 226, 158, 0.9));
 	}
-
 </style>

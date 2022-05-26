@@ -1,30 +1,37 @@
-
 import {
+	computed,
 	reactive
 } from "vue";
 
+export {account} from "../../core/ddp";
 import {
-	ddp
+	ddp,
+	useMongo,
+	db,
+	account
 } from "../../core/ddp";
 
-export const user = reactive({})
+export const mineInfo = reactive({})
 
-export const Users = ddp.db.collection('users')
-ddp.user.onChange((info) => {
-	if (info) {
-		for (const key in info) {
-			user[key] = info[key]
-		}
-	} else {
-		for (const key in user) {
-			delete user[key]
+export const Users = db.collection('users')
+
+export const ready = computed(()=>account.state===1)
+
+account.onChange(nv => {
+	const removes =new Set( Object.keys(mineInfo))
+	if (nv) {
+		for (const key in nv) {
+			mineInfo[key] = nv[key]
+			removes.delete(key)
 		}
 	}
+	removes.forEach(key=>delete mineInfo[key])
 })
+
 
 export const signin = async (data) => {
 	if (!data.username || !data.password) return
-	ddp.loginWithPassword(data.username, data.password).catch(err => {
+	account.loginWithPassword(data.username, data.password).catch(err => {
 		uni.showToast({
 			title: '密码或者用户名错误'
 		})
@@ -33,9 +40,10 @@ export const signin = async (data) => {
 
 export const signup = async (data) => {
 	if (!data.username || !data.password || data.password !== data.password1) return
-	ddp.createAccount(data.username, data.password).catch(err => {
+	account.createAccount(data.username, data.password).catch(err => {
+		console.log(err)
 		uni.showToast({
-			title: '注册失败'
+			title: '注册失败' + err?.reason
 		})
 	});
 };

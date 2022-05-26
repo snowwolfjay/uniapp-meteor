@@ -1,107 +1,116 @@
 <script>
-import { ddp } from "./modules/core/ddp";
-console.log(ddp)
-ddp.subscribe("rooms.all")
-ddp.subscribe("rooms.mine")
-export default {
-	onLaunch: function () {
-		console.log("App Launch");
-	},
-	onShow: function () {
-		console.log("App Show");
-	},
-	onHide: function () {
-		console.log("App Hide");
-	},
-};
+	import {
+		ddp
+	} from "./modules/core/ddp";
+	export default {
+		onLaunch: function() {
+			console.log("App Launch");
+			// #ifdef H5
+			uni.reLaunch({
+				url: "/modules/user/signin/signin"
+			})
+			// #endif
+		},
+		onShow: function() {
+			console.log("App Show");
+		},
+		onHide: function() {
+			console.log("App Hide");
+		},
+	};
 </script>
 
 <style>
-/*每个页面公共css */
-page {
-	display: flex;
-	flex-direction: column;
-	/*
+	/*每个页面公共css */
+	page {
+		display: flex;
+		flex-direction: column;
+		/*
 	min-height: 100%; */
-	background-color: #eeeeff;
-	min-height: 100%;
-}
-page-body {
-	background-color: red;
-}
-view{
-	box-sizing: border-box;
-}
-.frow,
-.fcol {
-	display: flex;
-}
+		background-color: #eeeeff;
+		min-height: 100%;
+	}
 
-.frow {
-	flex-direction: row;
-}
+	page-body {
+		background-color: red;
+	}
 
-.fcol {
-	flex-direction: column;
-}
+	view {
+		box-sizing: border-box;
+	}
 
-.fcnt,
-.cntx {
-	justify-content: center;
-}
+	.frow,
+	.fcol {
+		display: flex;
+	}
 
-.fcnt,
-.cnty {
-	align-items: center;
-}
+	.frow {
+		flex-direction: row;
+	}
 
-.fbtw {
-	justify-content: space-between;
-}
+	.fcol {
+		flex-direction: column;
+	}
 
-.fsc {
-	align-self: center;
-}
+	.fcnt,
+	.cntx {
+		justify-content: center;
+	}
 
-.fse {
-	align-self: flex-end;
-}
+	.fcnt,
+	.cnty {
+		align-items: center;
+	}
 
-.fss {
-	align-self: flex-start;
-}
+	.fbtw {
+		justify-content: space-between;
+	}
 
-.pd {
-	padding: 0.5rem;
-}
+	.fsc {
+		align-self: center;
+	}
 
-.pdh {
-	padding: 0.5rem 0;
-}
-.f1 {
-	flex: 1;
-}
-.pdv {
-	padding: 0 0.5rem;
-}
+	.fse {
+		align-self: flex-end;
+	}
 
-.mg {
-	margin: 0.5rem;
-}
+	.fss {
+		align-self: flex-start;
+	}
 
-.mgh {
-	margin: 0 0.5rem;
-}
+	.pd {
+		padding: 0.5rem;
+	}
 
-.mgv {
-	margin: 0.5rem 0;
-}
+	.pdh {
+		padding: 0.5rem 0;
+	}
 
-.mgt {
-	margin-top: 0.5rem;
-}
+	.f1 {
+		flex: 1;
+	}
 
-.mgb {
-	margin-bottom: 0.5rem;
-}
+	.pdv {
+		padding: 0 0.5rem;
+	}
+
+	.mg {
+		margin: 0.5rem;
+	}
+
+	.mgh {
+		margin: 0 0.5rem;
+	}
+
+	.mgv {
+		margin: 0.5rem 0;
+	}
+
+	.mgt {
+		margin-top: 0.5rem;
+	}
+
+	.mgb {
+		margin-bottom: 0.5rem;
+	}
 </style>

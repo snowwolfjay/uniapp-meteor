@@ -1,36 +1,49 @@
 import {
+	useMongo,
 	ddp
 } from "../../core/ddp.js"
 import {
+	mineInfo
+} from "../../user/service/index.js"
+import {
 	reactive,
-	computed
+	computed,
+	watchEffect
 } from "vue"
-export const myRooms = reactive([])
-const allRooms = reactive([])
-console.log(ddp)
-const MyRooms = ddp.db.collection('rooms-mine')
-const AllRooms = ddp.db.collection('rooms')
-const Messages = ddp.db.collection('messages')
+ddp.subscribe("rooms.all")
+ddp.subscribe("rooms.mine")
+const db = useMongo(mineInfo._id, ddp)
+const AllRooms = db.collection('rooms')
+const Messages = db.collection('messages')
 let currentRoom = null;
-ddp.map(MyRooms, myRooms)
-ddp.map(AllRooms, allRooms)
-
+console.log(mineInfo._id)
+export const myRooms = AllRooms.liveQuery({
+	createdBy: mineInfo._id
+})
 export const roomMessages = reactive([])
-export const otherRooms = computed(() => allRooms.filter(v => !myRooms.some(e => e._id === v._id)))
-export const sendMessage = txt => new Promise(resolve => {
-	if (!currentRoom || !txt) return resolve(false)
+export const otherRooms = AllRooms.liveQuery({
+	createdBy: {
+		$ne: mineInfo._id
+	}
+})
+watchEffect(() => {
+	console.log(myRooms)
+	console.log(otherRooms)
+})
+export const sendMessage = async txt => {
+	if (!currentRoom || !txt) return
 	const data = {
 		roomId: currentRoom,
 		txt,
-		_id: Date.now()
+		_id: mineInfo._id + "-" + Date.now()
 	}
-	ddp.call('message.add', {
-		...data,
-		_id: undefined
-	}, (err, res) => {
-		resolve(!err)
+	const res = await Messages.insert({
+		...data
+	}, {
+		remote: 1
 	})
-})
+	console.log(res)
+}
 export const createRoom = name => new Promise(resolve => {
 	{
 		ddp.call('room.create', name, (err, res) => {
@@ -69,11 +82,9 @@ Messages.observe({
 		index > -1 && roomMessages.splice(i, 1, nv)
 	}
 });
-import {
-	user
-} from "../../user/service"
+
 export const joinRoom = id => new Promise(resolve => {
-	if (!user._id) return uni.navigateTo({
+	if (!mineInfo._id) return uni.navigateTo({
 		url: '/modules/user/signin/signin'
 	})
 	ddp.call('room.join', id, (err, res) => {
